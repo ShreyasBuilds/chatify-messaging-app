@@ -1,27 +1,56 @@
+// import express from "express";
+// import dotenv from "dotenv";
+// import path from "path";
+
+// import authRoutes from "./routes/auth.route.js";
+// import messageRoutes from "./routes/message.route.js";
+
+// dotenv.config();
+// console.log(process.env.PORT);
+
+// const app = express();
+// const __dirname = path.resolve();
+
+// const PORT = process.env.PORT || 3000;
+
+// app.use("/api/auth",authRoutes);
+// app.use("/api/message", messageRoutes);
+
+// // make ready for deployment
+// if(process.env.NODE_ENV === "production"){
+//      app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+//      app.get("*", (_,res) => {
+//           res.sendFile(path.join(__dirname, "../frontend" , "dist", "index.html"));
+//      });
+// }
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`) );
+
 import express from "express";
 import dotenv from "dotenv";
-import path from "path";
 
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
 
 dotenv.config();
-console.log(process.env.PORT);
 
 const app = express();
-const __dirname = path.resolve();
 
-const PORT = process.env.PORT || 3000;
+// Middleware
+app.use(express.json());
 
-app.use("/api/auth",authRoutes);
+// API Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/message", messageRoutes);
 
-// make ready for deployment
-if(process.env.NODE_ENV === "production"){
-     app.use(express.static(path.join(__dirname, "../frontend/dist")));
+// Test Route
+app.get("/", (req, res) => {
+    res.send("Chatify Backend is Running 🚀");
+});
 
-     app.get("*", (_,res) => {
-          res.sendFile(path.join(__dirname, "../frontend" , "dist", "index.html"));
-     });
-}
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`) );
+// Use Render's PORT or localhost:3000 for development
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
